@@ -10,32 +10,29 @@ public class Adder
     {
         Console.Clear();
         Cargo? cargo = null;
-        string? name = null;
-        string? mass = null;
-        double massd = 0.0;
-        double volumed = 0.0;
-        string? isHazard = null;
-        bool isIt = false;
-        string? volume = null;
-        GetData(name, "Cargo's name:");
-        massd = GetDouble(mass, "Cargo's mass:");
+        string? name;
+        double massd;
+        double volumed;
+        bool isIt;
+        name = GetData("Cargo's name:");
+        massd = GetDouble("Cargo's mass:");
         switch (container.ContainerType)
         {
             case "L":
-                isIt = GetBool(isHazard, "Is cargo hazardous? (yes/no)");
-                volumed = GetDouble(volume, "Cargo's volume:");
+                isIt = GetBool("Is cargo hazardous? (yes/no)");
+                volumed = GetDouble("Cargo's volume:");
 
                 cargo = new CargoL(name, volumed, massd, isIt);
                 break;
             case "G":
-                volumed = GetDouble(volume, "Cargo's volume:");
+                volumed = GetDouble("Cargo's volume:");
 
                 cargo = new CargoG(name, volumed, massd);
                 break;
             case "C":
                 string? prod = null;
-                Products prodP = Products.Bananas;
-                prodP = GetProd(prod, "Product kind (bananas, chocolate, fish, meat, ice cream, frozen pizza, cheese, sausages, butter, eggs):");
+                Products prodP;
+                prodP = GetProd("Product kind (bananas, chocolate, fish, meat, ice cream, frozen pizza, cheese, sausages, butter, eggs):");
 
                 cargo = new CargoC(name, massd, prodP);
                 break;
@@ -49,56 +46,80 @@ public class Adder
     public static void AddShip()
     {
         Console.Clear();
-        Ship? ship = null;
-        string? name = null;
-        string? maxSpeed = null;
-        double maxSpeedd = 0.0;
-        string? maxLoad = null;
-        double maxLoadd = 0.0;
-        string? maxQty = null;
-        int maxQtyd = 0;
-        GetData(name, "Ship's name: ");
-        maxSpeedd = GetDouble(maxSpeed, "Ship's max speed:");
-        maxLoadd = GetDouble(name, "Ship's max load:");
-        maxQtyd = (int)GetDouble(name, "Ship's max qty:");
+        Ship? ship;
+        string? name;
+        double maxSpeedd;
+        double maxLoadd;
+        int maxQtyd;
+        name = GetData("Ship's name: ");
+        maxSpeedd = GetDouble("Ship's max speed:");
+        maxLoadd = GetDouble("Ship's max load:");
+        maxQtyd = (int)GetDouble("Ship's max qty:");
         ship = new Ship(name, maxSpeedd, maxLoadd, maxQtyd);
         Program.ShipsInPort.Add(ship);
     }
 
     public static void AddContainer()
     {
-        
+        Console.Clear();
+        Container? container;
+        string? type;
+        string? question = null;
+        type = GetType("Container type (liquid, refrigerator, gas):");
+        var h = GetDouble("Container's height:");
+        var w = GetDouble("Container's width:");
+        var l = GetDouble("Container's length:");
+        var weight = GetDouble("Container's weight: ");
+        switch (type)
+        {
+            case "L":
+                container = new ContainerL(h, w, l, weight);
+                Program.ContainersInPort.Add(container);
+                break;
+            case "G":
+                container = new ContainerG(h, w, l, weight);
+                Program.ContainersInPort.Add(container);
+                break;
+            case "C":
+                var capacity = GetDouble("Container's capacity:");
+                var temp = GetDouble("Container's temperature:");
+                container = new ContainerC(h, w, l, weight, capacity, temp);
+                Program.ContainersInPort.Add(container);
+                break;
+        }
     }
 
 
-    public static void GetData(string? kind, String mssg)
-    {
+    public static string GetData(String mssg)
+    {   
         Console.Clear();
         Console.WriteLine(mssg);
-        if (kind == null)
+        var kind = Console.ReadLine();
+        
+        if (kind == null || kind.Length == 0)
         {
             Console.Clear();
-            GetData(kind, mssg + "\nField Can't be empty");
+            kind = GetData(mssg + "\nField Can't be empty");
         }
 
-        kind = Console.ReadLine();
+        return kind;
     }
 
-    public static bool GetBool(string? kind, String mssg)
+    public static bool GetBool(String mssg)
     {
-        var output = false;
         Console.Clear();
         Console.WriteLine(mssg);
-        if (kind == null )
+        var output = false;
+        var kind = Console.ReadLine();
+        var mssgI = mssg;
+        if (kind == null || kind.Length == 0)
         {
-            Console.Clear();
-            GetBool(kind, mssg + "\nField Can't be empty");
+            GetBool("\nField Can't be empty");
         }
 
         if (kind.ToLower() != "yes" && kind.ToLower() != "no")
         {
-            Console.Clear();
-            GetBool(kind, mssg + "\nonly yes or no");
+            GetBool("\nonly yes or no");
         }
 
         if (kind.ToLower() == "yes")
@@ -108,21 +129,20 @@ public class Adder
         return output;
     }
     
-    public static Products GetProd(string? kind, String mssg)
+    public static Products GetProd(String mssg)
     {
-        var output = Products.Bananas;
         Console.Clear();
         Console.WriteLine(mssg);
-        if (kind == null )
+        var output = Products.Bananas;
+        var kind = Console.ReadLine();
+        if (kind == null || kind.Length == 0)
         {
-            Console.Clear();
-            GetBool(kind, mssg + "\nField Can't be empty");
+            GetBool("\nField Can't be empty");
         }
 
         if (kind.ToLower() != "bananas" && kind.ToLower() != "chocolate" && kind.ToLower() != "fish" && kind.ToLower() != "meat"  && kind.ToLower() != "ice cream"  && kind.ToLower() != "frozen pizza"  && kind.ToLower() != "cheese" && kind.ToLower() != "sausages" && kind.ToLower() != "butter" && kind.ToLower() != "eggs" )
         {
-            Console.Clear();
-            GetBool(kind, mssg + "\nonly listed products");
+            GetBool("\nonly listed products");
         }
 
         switch (kind.ToLower())
@@ -162,28 +182,54 @@ public class Adder
         return output;
     }
     
-    public static double GetDouble(string? kind, String mssg)
+    public static double GetDouble(String mssg)
     {
-        var output = 0.0d;
         Console.Clear();
         Console.WriteLine(mssg);
-        if (kind == null )
+        var output = 0.0d;
+        var kind = Console.ReadLine();
+        if (kind == null || kind.Length == 0)
         {
-            Console.Clear();
-            output = GetDouble(kind, mssg + "\nField Can't be empty");
+            output = GetDouble(mssg + "\nField Can't be empty");
+        } else if (double.TryParse(kind, out output))
+        {
+            return output;
+        }
+        else
+        {
+            output = GetDouble(mssg + "\nmust be a number");
+        }
+        return output;
+    }
+
+    public static string GetType(String mssg)
+    {
+        Console.Clear();
+        Console.WriteLine(mssg);
+        var output = "";
+        var kind = Console.ReadLine();
+        if (kind == null || kind.Length == 0)
+        {
+            kind = GetType("\nField Can't be empty");
+        }
+        if (kind.ToLower() != "liquid" && kind.ToLower() != "refrigerator" && kind.ToLower() != "gas")
+        {
+            
+            kind = GetType("\nonly liquid, refrigerator or gas");
         }
 
-        try
+        switch (kind.ToLower())
         {
-            double.TryParse(kind, out output);
+            case "liquid":
+                output = "L";
+                break;
+            case "refrigerator":
+                output = "C";
+                break;
+            case "gas":
+                output = "G";
+                break;
         }
-        catch (Exception ex)
-        { 
-            Console.Clear();
-           output =  GetDouble(kind, mssg + "\nmust be a number");
-        }
-
-        
         return output;
     }
 }

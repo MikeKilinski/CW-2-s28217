@@ -10,7 +10,7 @@ public class StartScreen
                           #                        SHIPPEX - PORT MANAGEMENT SYSTEM                          #
                           #                    You won't SEA anything better then this!                      #
                           #                                                                                  #
-                          #                         <<<PRESS ANY KEY TO CONTINUE>>>                          #
+                          #                           <<<PRESS ENTER TO CONTINUE>>>                          #
                           #                                                                                  #
                           #      copyright 2025 MikeK. All rights reserved.                                  #
                           #                                                                                  #

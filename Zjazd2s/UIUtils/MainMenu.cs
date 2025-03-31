@@ -8,6 +8,7 @@ public class MainMenu
         var works = true;
         while (works)
         {
+            Console.Clear();
             Console.WriteLine("MainMenu");
             Console.WriteLine(
                 $"There are {Program.ShipsInPort.Count} ships and {Program.ContainersInPort.Count} containers in the port\n");
@@ -30,7 +31,7 @@ public class MainMenu
                 case "3": Console.Clear(); Browser.BrowseAll("C"); break;
                 case "4": Console.Clear();
                     Adder.AddContainer(); 
-                    _mssg = "To be added";
+                    _mssg = "Container added";
                     break;
                 case "5": Console.Clear(); Console.WriteLine("Exit");
                     works = false; break;
@@ -39,13 +40,12 @@ public class MainMenu
 
             if (_mssg != null)
             {
-                Console.WriteLine(_mssg);
+                Console.WriteLine(_mssg + "\nPress ENTER to go back");
+                Console.ReadLine();
             }
             _mssg = null;
 
         }
-
-        works = true;
 
     }
 }
